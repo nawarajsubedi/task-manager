@@ -1,0 +1,13 @@
+appsettings.json
+.vs/
+.vscode/
+.idea/
+publish/
+PublishProfiles/
+bin/
+obj/
+Debug/
+Release/
+pub/
+node_modules/
+dist/
