@@ -12,7 +12,7 @@ namespace DotNetAssignment.Migrations
 
         protected override void Seed(ApplicationDbContext context)
         {
-            context.Roles.AddOrUpdate(x => x.Id,
+            context.Roles.AddOrUpdate(x => x.Name,
               new Microsoft.AspNet.Identity.EntityFramework.IdentityRole() { Name = "super_admin" },
               new Microsoft.AspNet.Identity.EntityFramework.IdentityRole() { Name = "admin" },
               new Microsoft.AspNet.Identity.EntityFramework.IdentityRole() { Name = "user" }
