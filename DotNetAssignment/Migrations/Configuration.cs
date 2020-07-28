@@ -14,9 +14,10 @@ namespace DotNetAssignment.Migrations
         {
             context.Roles.AddOrUpdate(x => x.Id,
               new Microsoft.AspNet.Identity.EntityFramework.IdentityRole() { Name = "super_admin" },
-              new Microsoft.AspNet.Identity.EntityFramework.IdentityRole() { Name = "admin" }
-              new Microsoft.AspNet.Identity.EntityFramework.IdentityRole() { Name = "user" },
+              new Microsoft.AspNet.Identity.EntityFramework.IdentityRole() { Name = "admin" },
+              new Microsoft.AspNet.Identity.EntityFramework.IdentityRole() { Name = "user" }
               );
+
         }
     }
 }
