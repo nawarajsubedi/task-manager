@@ -12,3 +12,5 @@ pub/
 node_modules/
 dist/
 packages/
+*.user
+*.suo
