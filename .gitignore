@@ -11,3 +11,4 @@ Release/
 pub/
 node_modules/
 dist/
+packages/
