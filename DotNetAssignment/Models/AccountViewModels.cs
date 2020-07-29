@@ -6,6 +6,7 @@ namespace DotNetAssignment.Models
     public class RegisterBaseUserViewModel
     {
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
