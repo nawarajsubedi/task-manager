@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using DotNetAssignment.Domain;
 using DotNetAssignment.Models;
 using System.Linq;
 using System.Data.Entity;
@@ -80,6 +81,13 @@ namespace DotNetAssignment.Controllers
         [Route("RegisterAdmin")]
         public async Task<IHttpActionResult> RegisterAdmin(RegisterBaseUserViewModel model)
         {
+            // first admin can register without login, after that only admin can add another admin
+            var adminExist = await AdminExist();
+            if (adminExist && !User.IsInRole("admin"))
+            {
+                return Unauthorized();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -134,6 +142,12 @@ namespace DotNetAssignment.Controllers
         }
 
         #region Helpers
+
+        private async Task<bool> AdminExist()
+        {
+            var context = Request.GetOwinContext().Get<ApplicationDbContext>();
+            return await context.Roles.Where(x => x.Name == "admin").SelectMany(x => x.Users).AnyAsync();
+        }
 
         private IHttpActionResult GetErrorResult(IdentityResult result)
         {
