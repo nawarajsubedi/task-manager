@@ -17,12 +17,13 @@ namespace DotNetAssignment.Services
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<TaskViewModel> Create(TaskViewModel model)
+        public async Task<TaskViewModel> Create(TaskViewModel model, string userId)
         {
             var task = new TodoTask
             {
                 Name = model.Name,
                 Description = model.Description,
+                CreatedBy = userId,
                 CreatedOn = DateTime.Now,
                 IsCompleted = false
             };

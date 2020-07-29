@@ -1,5 +1,6 @@
 ﻿using DotNetAssignment.Models;
 using DotNetAssignment.Services;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -54,7 +55,7 @@ namespace DotNetAssignment.Controllers
                 return BadRequest(ModelState);
             }
 
-            var task = await taskService.Create(model);
+            var task = await taskService.Create(model, User.Identity.GetUserId());
             return Created(new Uri($"{Request.RequestUri.ToString()}/{task.Id}"), task);
         }
 
