@@ -29,8 +29,14 @@ namespace DotNetAssignment.Controllers
         [Route("{id:int}")]
         public async Task<IHttpActionResult> Get(int id)
         {
-            var tasks = await taskService.GetById(id);
-            return Ok(tasks);
+            var task = await taskService.GetById(id);
+
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(task);
         }
 
         // POST Task
