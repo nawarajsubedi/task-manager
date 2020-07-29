@@ -59,12 +59,13 @@ namespace DotNetAssignment.Controllers
             if (userExist == null)
             {
                 IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-                UserManager.AddToRole(user.Id, "user");
 
                 if (!result.Succeeded)
                 {
                     return GetErrorResult(result);
                 }
+
+                await UserManager.AddToRoleAsync(user.Id, "user");
             }
             else
             {
@@ -95,12 +96,13 @@ namespace DotNetAssignment.Controllers
             if (userExist == null)
             {
                 IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-                UserManager.AddToRole(user.Id, "admin");
 
                 if (!result.Succeeded)
                 {
                     return GetErrorResult(result);
                 }
+
+                await UserManager.AddToRoleAsync(user.Id, "admin");
             }
             else
             {
