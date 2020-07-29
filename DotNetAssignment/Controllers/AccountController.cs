@@ -59,7 +59,7 @@ namespace DotNetAssignment.Controllers
             if (userExist == null)
             {
                 IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-                UserManager.AddToRole(user.Id, "admin");
+                UserManager.AddToRole(user.Id, "user");
 
                 if (!result.Succeeded)
                 {
