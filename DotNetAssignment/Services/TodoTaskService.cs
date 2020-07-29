@@ -68,7 +68,7 @@ namespace DotNetAssignment.Services
             };
         }
 
-        public async Task<TaskViewModel> MarkAsCompleted(int id)
+        public async Task<TaskViewModel> MarkAsCompleted(int id, string userId)
         {
             var task = await unitOfWork.TodoTask.Get(id);
 
@@ -78,6 +78,7 @@ namespace DotNetAssignment.Services
             }
 
             task.IsCompleted = true;
+            task.MarkBy = userId;
             await unitOfWork.Complete();
 
             return new TaskViewModel
@@ -89,7 +90,7 @@ namespace DotNetAssignment.Services
             };
         }
 
-        public async Task<TaskViewModel> Update(TaskViewModel model)
+        public async Task<TaskViewModel> Update(TaskViewModel model, string userId)
         {
             var task = await unitOfWork.TodoTask.Get(model.Id);
 
@@ -100,6 +101,8 @@ namespace DotNetAssignment.Services
 
             task.Name = model.Name;
             task.Description = model.Description;
+            task.ModifiedBy = userId;
+            task.ModifiedOn = DateTime.Now;
             await unitOfWork.Complete();
 
             return model;

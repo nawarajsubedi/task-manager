@@ -82,7 +82,7 @@ namespace DotNetAssignment.Controllers
             }
 
             model.Id = id;
-            var updatedTask = await taskService.Update(model);
+            var updatedTask = await taskService.Update(model, User.Identity.GetUserId());
 
             return Ok(updatedTask);
         }
@@ -98,7 +98,7 @@ namespace DotNetAssignment.Controllers
             {
                 return NotFound();
             }
-            var updatedTask = await taskService.MarkAsCompleted(id);
+            var updatedTask = await taskService.MarkAsCompleted(id, User.Identity.GetUserId());
 
             return Ok(updatedTask);
         }

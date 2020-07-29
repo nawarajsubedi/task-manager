@@ -9,7 +9,7 @@ namespace DotNetAssignment.Services
         Task<TaskViewModel> GetById(int id);
         Task<List<TaskViewModel>> GetAllAsync();
         Task<TaskViewModel> Create(TaskViewModel model, string userId);
-        Task<TaskViewModel> Update(TaskViewModel model);
-        Task<TaskViewModel> MarkAsCompleted(int id);
+        Task<TaskViewModel> Update(TaskViewModel model, string userId);
+        Task<TaskViewModel> MarkAsCompleted(int id, string userId);
     }
 }
