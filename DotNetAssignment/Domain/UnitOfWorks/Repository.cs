@@ -47,24 +47,28 @@ namespace DotNetAssignment.UnitOfWorks
             return Context.Set<TEntity>().SingleOrDefaultAsync(predicate);
         }
 
-        public async Task Add(TEntity entity)
+        public Task Add(TEntity entity)
         {
             Context.Set<TEntity>().Add(entity);
+            return Task.FromResult(0);
         }
 
-        public async Task AddRange(IEnumerable<TEntity> entities)
+        public Task AddRange(IEnumerable<TEntity> entities)
         {
             Context.Set<TEntity>().AddRange(entities);
+            return Task.FromResult(0);
         }
 
-        public async Task Remove(TEntity entity)
+        public Task Remove(TEntity entity)
         {
             Context.Set<TEntity>().Remove(entity);
+            return Task.FromResult(0);
         }
 
-        public async Task RemoveRange(IEnumerable<TEntity> entities)
+        public Task RemoveRange(IEnumerable<TEntity> entities)
         {
             Context.Set<TEntity>().RemoveRange(entities);
+            return Task.FromResult(0);
         }
     }
 }
