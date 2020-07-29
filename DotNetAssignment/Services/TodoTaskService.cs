@@ -55,6 +55,11 @@ namespace DotNetAssignment.Services
             var task = await unitOfWork.TodoTask.Get(id);
             await unitOfWork.Complete();
 
+            if (task == null)
+            {
+                return null;
+            }
+
             return new TaskViewModel
             {
                 Id = task.Id,
@@ -67,6 +72,12 @@ namespace DotNetAssignment.Services
         public async Task<TaskViewModel> MarkAsCompleted(int id)
         {
             var task = await unitOfWork.TodoTask.Get(id);
+
+            if (task == null)
+            {
+                return null;
+            }
+
             task.IsCompleted = true;
             await unitOfWork.Complete();
 
@@ -82,6 +93,12 @@ namespace DotNetAssignment.Services
         public async Task<TaskViewModel> Update(TaskViewModel model)
         {
             var task = await unitOfWork.TodoTask.Get(model.Id);
+
+            if (task == null)
+            {
+                return null;
+            }
+
             task.Name = model.Name;
             task.Description = model.Description;
             await unitOfWork.Complete();
