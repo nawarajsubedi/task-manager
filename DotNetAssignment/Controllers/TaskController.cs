@@ -44,6 +44,11 @@ namespace DotNetAssignment.Controllers
         [Route("")]
         public async Task<IHttpActionResult> Create([FromBody] TaskViewModel model)
         {
+            if (model == null)
+            {
+                return BadRequest("Request body is required");
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -58,6 +63,11 @@ namespace DotNetAssignment.Controllers
         [Route("{id:int}")]
         public async Task<IHttpActionResult> Update(int id, [FromBody] TaskViewModel model)
         {
+            if (model == null)
+            {
+                return BadRequest("Request body is required");
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
