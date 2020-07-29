@@ -38,7 +38,6 @@ namespace DotNetAssignment.Services
         public async Task<List<TaskViewModel>> GetAllAsync()
         {
             var tasks = await unitOfWork.TodoTask.GetAll();
-            await unitOfWork.Complete();
 
             return tasks.Select(x => new TaskViewModel
             {
@@ -53,7 +52,6 @@ namespace DotNetAssignment.Services
         public async Task<TaskViewModel> GetById(int id)
         {
             var task = await unitOfWork.TodoTask.Get(id);
-            await unitOfWork.Complete();
 
             if (task == null)
             {
