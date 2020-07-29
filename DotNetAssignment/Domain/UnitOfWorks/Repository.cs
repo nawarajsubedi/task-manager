@@ -39,7 +39,7 @@ namespace DotNetAssignment.UnitOfWorks
 
         public async Task<IEnumerable<TEntity>> Find(Expression<Func<TEntity, bool>> predicate)
         {
-            return Context.Set<TEntity>().Where(predicate);
+            return await Context.Set<TEntity>().Where(predicate).ToListAsync();
         }
 
         public Task<TEntity> SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
