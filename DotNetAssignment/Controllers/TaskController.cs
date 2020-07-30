@@ -19,10 +19,11 @@ namespace DotNetAssignment.Controllers
         }
 
         // GET Task
+        // GET Task?completed=true
         [Route("")]
-        public async Task<IHttpActionResult> GetAll()
+        public async Task<IHttpActionResult> GetAll(bool? completed = null)
         {
-            var tasks = await taskService.GetAllAsync(User.Identity.GetUserId(), User.IsInRole("admin"));
+            var tasks = await taskService.GetAllAsync(User.Identity.GetUserId(), User.IsInRole("admin"), completed);
             return Ok(tasks);
         }
 
