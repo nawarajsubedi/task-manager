@@ -57,7 +57,7 @@ namespace DotNetAssignment.Controllers
             }
 
             var task = await taskService.Create(model, User.Identity.GetUserId());
-            return Created(new Uri($"{Request.RequestUri.ToString()}/{task.Id}"), task);
+            return Created(new Uri($"{Request.RequestUri.ToString().TrimEnd('/')}/{task.Id}"), task);
         }
 
         // PUT Task/5
