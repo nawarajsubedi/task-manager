@@ -102,5 +102,20 @@ namespace DotNetAssignment.Controllers
 
             return Ok(updatedTask);
         }
+
+        // DELETE Task/5
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<IHttpActionResult> Delete(int id)
+        {
+            var deleted = await taskService.Delete(id, User.Identity.GetUserId(), User.IsInRole("admin"));
+
+            if (!deleted)
+            {
+                return NotFound();
+            }
+
+            return Ok();
+        }
     }
 }

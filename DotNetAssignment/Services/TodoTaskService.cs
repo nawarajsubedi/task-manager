@@ -95,6 +95,21 @@ namespace DotNetAssignment.Services
             return model;
         }
 
+        public async Task<bool> Delete(int id, string userId, bool isAdmin)
+        {
+            var task = await GetTask(id, userId, isAdmin);
+
+            if (task == null)
+            {
+                return false;
+            }
+
+            await unitOfWork.TodoTask.Remove(task);
+            await unitOfWork.Complete();
+
+            return true;
+        }
+
         private async Task<TodoTask> GetTask(int id, string userId, bool isAdmin)
         {
             var task = await unitOfWork.TodoTask.Get(id);

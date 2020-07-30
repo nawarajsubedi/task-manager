@@ -11,5 +11,6 @@ namespace DotNetAssignment.Services
         Task<TaskViewModel> Create(TaskViewModel model, string userId);
         Task<TaskViewModel> Update(TaskViewModel model, string userId, bool isAdmin);
         Task<TaskViewModel> MarkAsCompleted(int id, string userId, bool isAdmin);
+        Task<bool> Delete(int id, string userId, bool isAdmin);
     }
 }
