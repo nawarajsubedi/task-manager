@@ -46,9 +46,9 @@ namespace DotNetAssignment.Services
             return tasks.Select(x => ToViewModel(x)).ToList();
         }
 
-        public async Task<TaskViewModel> GetById(int id)
+        public async Task<TaskViewModel> GetById(int id, string userId, bool isAdmin)
         {
-            var task = await unitOfWork.TodoTask.Get(id);
+            var task = await GetTask(id, userId, isAdmin);
 
             if (task == null)
             {
@@ -58,9 +58,9 @@ namespace DotNetAssignment.Services
             return ToViewModel(task);
         }
 
-        public async Task<TaskViewModel> MarkAsCompleted(int id, string userId)
+        public async Task<TaskViewModel> MarkAsCompleted(int id, string userId, bool isAdmin)
         {
-            var task = await unitOfWork.TodoTask.Get(id);
+            var task = await GetTask(id, userId, isAdmin);
 
             if (task == null)
             {
@@ -77,9 +77,9 @@ namespace DotNetAssignment.Services
             return ToViewModel(task);
         }
 
-        public async Task<TaskViewModel> Update(TaskViewModel model, string userId)
+        public async Task<TaskViewModel> Update(TaskViewModel model, string userId, bool isAdmin)
         {
-            var task = await unitOfWork.TodoTask.Get(model.Id);
+            var task = await GetTask(model.Id, userId, isAdmin);
 
             if (task == null)
             {
@@ -93,6 +93,19 @@ namespace DotNetAssignment.Services
             await unitOfWork.Complete();
 
             return model;
+        }
+
+        private async Task<TodoTask> GetTask(int id, string userId, bool isAdmin)
+        {
+            var task = await unitOfWork.TodoTask.Get(id);
+
+            // other user's task is treated as not found
+            if (task == null || (!isAdmin && task.CreatedBy != userId))
+            {
+                return null;
+            }
+
+            return task;
         }
 
         private TaskViewModel ToViewModel(TodoTask task)

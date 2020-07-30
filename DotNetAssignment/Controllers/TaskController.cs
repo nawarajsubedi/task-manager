@@ -30,7 +30,7 @@ namespace DotNetAssignment.Controllers
         [Route("{id:int}")]
         public async Task<IHttpActionResult> Get(int id)
         {
-            var task = await taskService.GetById(id);
+            var task = await taskService.GetById(id, User.Identity.GetUserId(), User.IsInRole("admin"));
 
             if (task == null)
             {
@@ -74,7 +74,7 @@ namespace DotNetAssignment.Controllers
                 return BadRequest(ModelState);
             }
 
-            var task = await taskService.GetById(id);
+            var task = await taskService.GetById(id, User.Identity.GetUserId(), User.IsInRole("admin"));
 
             if (task == null)
             {
@@ -82,7 +82,7 @@ namespace DotNetAssignment.Controllers
             }
 
             model.Id = id;
-            var updatedTask = await taskService.Update(model, User.Identity.GetUserId());
+            var updatedTask = await taskService.Update(model, User.Identity.GetUserId(), User.IsInRole("admin"));
 
             return Ok(updatedTask);
         }
@@ -92,13 +92,13 @@ namespace DotNetAssignment.Controllers
         [Route("{id:int}")]
         public async Task<IHttpActionResult> MarkAsCompleted(int id)
         {
-            var task = await taskService.GetById(id);
+            var task = await taskService.GetById(id, User.Identity.GetUserId(), User.IsInRole("admin"));
 
             if (task == null)
             {
                 return NotFound();
             }
-            var updatedTask = await taskService.MarkAsCompleted(id, User.Identity.GetUserId());
+            var updatedTask = await taskService.MarkAsCompleted(id, User.Identity.GetUserId(), User.IsInRole("admin"));
 
             return Ok(updatedTask);
         }
