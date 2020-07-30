@@ -31,9 +31,7 @@ namespace DotNetAssignment.Services
             await unitOfWork.TodoTask.Add(task);
             await unitOfWork.Complete();
 
-            model.Id = task.Id;
-
-            return model;
+            return ToViewModel(task);
         }
 
         public async Task<List<TaskViewModel>> GetAllAsync(string userId, bool isAdmin, bool? completed)
@@ -97,7 +95,7 @@ namespace DotNetAssignment.Services
             task.ModifiedOn = DateTime.UtcNow;
             await unitOfWork.Complete();
 
-            return model;
+            return ToViewModel(task);
         }
 
         public async Task<bool> Delete(int id, string userId, bool isAdmin)
@@ -135,7 +133,8 @@ namespace DotNetAssignment.Services
                 Id = task.Id,
                 Name = task.Name,
                 Description = task.Description,
-                IsCompleted = task.IsCompleted
+                IsCompleted = task.IsCompleted,
+                CreatedOn = task.CreatedOn
             };
         }
     }
