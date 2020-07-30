@@ -22,7 +22,7 @@ namespace DotNetAssignment.Controllers
         [Route("")]
         public async Task<IHttpActionResult> GetAll()
         {
-            var tasks = await taskService.GetAllAsync();
+            var tasks = await taskService.GetAllAsync(User.Identity.GetUserId(), User.IsInRole("admin"));
             return Ok(tasks);
         }
 

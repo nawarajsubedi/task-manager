@@ -7,7 +7,7 @@ namespace DotNetAssignment.Services
     public interface ITodoTaskService
     {
         Task<TaskViewModel> GetById(int id);
-        Task<List<TaskViewModel>> GetAllAsync();
+        Task<List<TaskViewModel>> GetAllAsync(string userId, bool isAdmin);
         Task<TaskViewModel> Create(TaskViewModel model, string userId);
         Task<TaskViewModel> Update(TaskViewModel model, string userId);
         Task<TaskViewModel> MarkAsCompleted(int id, string userId);

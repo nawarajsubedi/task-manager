@@ -36,9 +36,12 @@ namespace DotNetAssignment.Services
             return model;
         }
 
-        public async Task<List<TaskViewModel>> GetAllAsync()
+        public async Task<List<TaskViewModel>> GetAllAsync(string userId, bool isAdmin)
         {
-            var tasks = await unitOfWork.TodoTask.GetAll();
+            // admin can see all tasks, user only own tasks
+            var tasks = isAdmin
+                ? await unitOfWork.TodoTask.GetAll()
+                : await unitOfWork.TodoTask.Find(x => x.CreatedBy == userId);
 
             return tasks.Select(x => ToViewModel(x)).ToList();
         }
