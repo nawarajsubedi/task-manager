@@ -21,8 +21,8 @@ namespace DotNetAssignment.Services
         {
             var task = new TodoTask
             {
-                Name = model.Name,
-                Description = model.Description,
+                Name = model.Name.Trim(),
+                Description = model.Description.Trim(),
                 CreatedBy = userId,
                 CreatedOn = DateTime.UtcNow,
                 IsCompleted = false
@@ -89,8 +89,8 @@ namespace DotNetAssignment.Services
                 return null;
             }
 
-            task.Name = model.Name;
-            task.Description = model.Description;
+            task.Name = model.Name.Trim();
+            task.Description = model.Description.Trim();
             task.ModifiedBy = userId;
             task.ModifiedOn = DateTime.UtcNow;
             await unitOfWork.Complete();
