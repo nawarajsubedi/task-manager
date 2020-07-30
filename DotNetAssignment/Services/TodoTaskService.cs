@@ -43,7 +43,7 @@ namespace DotNetAssignment.Services
                 ? await unitOfWork.TodoTask.GetAll()
                 : await unitOfWork.TodoTask.Find(x => x.CreatedBy == userId);
 
-            return tasks.Select(x => ToViewModel(x)).ToList();
+            return tasks.OrderByDescending(x => x.CreatedOn).Select(x => ToViewModel(x)).ToList();
         }
 
         public async Task<TaskViewModel> GetById(int id, string userId, bool isAdmin)
