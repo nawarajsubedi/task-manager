@@ -77,9 +77,12 @@ namespace DotNetAssignment.Services
                 return null;
             }
 
-            task.IsCompleted = true;
-            task.MarkBy = userId;
-            await unitOfWork.Complete();
+            if (!task.IsCompleted)
+            {
+                task.IsCompleted = true;
+                task.MarkBy = userId;
+                await unitOfWork.Complete();
+            }
 
             return new TaskViewModel
             {
