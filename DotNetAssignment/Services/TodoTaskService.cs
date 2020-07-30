@@ -24,7 +24,7 @@ namespace DotNetAssignment.Services
                 Name = model.Name,
                 Description = model.Description,
                 CreatedBy = userId,
-                CreatedOn = DateTime.Now,
+                CreatedOn = DateTime.UtcNow,
                 IsCompleted = false
             };
 
@@ -102,7 +102,7 @@ namespace DotNetAssignment.Services
             task.Name = model.Name;
             task.Description = model.Description;
             task.ModifiedBy = userId;
-            task.ModifiedOn = DateTime.Now;
+            task.ModifiedOn = DateTime.UtcNow;
             await unitOfWork.Complete();
 
             return model;
