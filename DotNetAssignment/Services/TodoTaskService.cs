@@ -40,14 +40,7 @@ namespace DotNetAssignment.Services
         {
             var tasks = await unitOfWork.TodoTask.GetAll();
 
-            return tasks.Select(x => new TaskViewModel
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Description = x.Description,
-                IsCompleted = x.IsCompleted
-            }).ToList();
-
+            return tasks.Select(x => ToViewModel(x)).ToList();
         }
 
         public async Task<TaskViewModel> GetById(int id)
@@ -59,13 +52,7 @@ namespace DotNetAssignment.Services
                 return null;
             }
 
-            return new TaskViewModel
-            {
-                Id = task.Id,
-                Name = task.Name,
-                Description = task.Description,
-                IsCompleted = task.IsCompleted
-            };
+            return ToViewModel(task);
         }
 
         public async Task<TaskViewModel> MarkAsCompleted(int id, string userId)
@@ -84,13 +71,7 @@ namespace DotNetAssignment.Services
                 await unitOfWork.Complete();
             }
 
-            return new TaskViewModel
-            {
-                Id = task.Id,
-                Name = task.Name,
-                Description = task.Description,
-                IsCompleted = task.IsCompleted
-            };
+            return ToViewModel(task);
         }
 
         public async Task<TaskViewModel> Update(TaskViewModel model, string userId)
@@ -109,6 +90,17 @@ namespace DotNetAssignment.Services
             await unitOfWork.Complete();
 
             return model;
+        }
+
+        private TaskViewModel ToViewModel(TodoTask task)
+        {
+            return new TaskViewModel
+            {
+                Id = task.Id,
+                Name = task.Name,
+                Description = task.Description,
+                IsCompleted = task.IsCompleted
+            };
         }
     }
 }
