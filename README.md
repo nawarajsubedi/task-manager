@@ -122,3 +122,37 @@ curl -X POST http://localhost:44306/Account/RegisterUser \
 ```
 
 Then get a token for this user as in step 2.
+
+## Endpoints
+
+| Method | URL                       | Who                       | Description                              |
+|--------|---------------------------|---------------------------|------------------------------------------|
+| POST   | `/Account/RegisterAdmin`  | anyone for first admin, then admin | register an admin               |
+| POST   | `/Account/RegisterUser`   | anyone                    | register a user                          |
+| POST   | `/Token`                  | anyone                    | get a bearer token                       |
+| GET    | `/Account/GetAll`         | admin                     | list users                               |
+| GET    | `/Task`                   | admin, user               | list tasks, `?completed=true/false` filter |
+| GET    | `/Task/{id}`              | admin, user               | get one task                             |
+| POST   | `/Task`                   | admin, user               | create a task                            |
+| PUT    | `/Task/{id}`              | admin, user               | update name and description              |
+| PATCH  | `/Task/{id}`              | admin, user               | mark task as completed                   |
+| DELETE | `/Task/{id}`              | admin, user               | delete a task                            |
+
+- A user only sees and changes tasks they created. Tasks of other users return `404`.
+- An admin sees and changes all tasks.
+- Task `Name` must be 5 to 30 characters, `Description` 10 to 500 characters.
+- Requests without a valid token return `401`.
+
+## Project structure
+
+```
+DotNetAssignment/
+  App_Start/         Web API, auth (OAuth) and identity setup
+  Controllers/       AccountController, TaskController
+  Domain/            DbContext, entities, repository and unit of work
+  IOC/               Unity container setup
+  Migrations/        EF migrations config and role seed
+  Models/            request / response models
+  Providers/         OAuth provider that checks username and password
+  Services/          task business logic
+```
