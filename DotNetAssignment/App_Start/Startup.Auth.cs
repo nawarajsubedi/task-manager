@@ -33,8 +33,12 @@ namespace DotNetAssignment
                 TokenEndpointPath = new PathString("/Token"),
                 Provider = new ApplicationOAuthProvider(PublicClientId),
                 AccessTokenExpireTimeSpan = TimeSpan.FromHours(1),
-                // In production mode set AllowInsecureHttp = false
+#if DEBUG
                 AllowInsecureHttp = true
+#else
+                // token only over https in release build
+                AllowInsecureHttp = false
+#endif
             };
 
             // Enable the application to use bearer tokens to authenticate users
