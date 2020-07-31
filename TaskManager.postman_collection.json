@@ -1,0 +1,300 @@
+{
+  "info": {
+    "name": "Task Manager",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:44306"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Account",
+      "item": [
+        {
+          "name": "Register admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/Account/RegisterAdmin",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "Account",
+                "RegisterAdmin"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Email\": \"admin@example.com\",\n  \"FirstName\": \"Admin\",\n  \"LastName\": \"User\",\n  \"Password\": \"Admin@123\",\n  \"ConfirmPassword\": \"Admin@123\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Register user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/Account/RegisterUser",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "Account",
+                "RegisterUser"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Email\": \"user@example.com\",\n  \"FirstName\": \"Test\",\n  \"LastName\": \"User\",\n  \"Organization\": \"Test Org\",\n  \"Password\": \"User@123\",\n  \"ConfirmPassword\": \"User@123\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Get token",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/Token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "Token"
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "grant_type",
+                  "value": "password"
+                },
+                {
+                  "key": "username",
+                  "value": "admin@example.com"
+                },
+                {
+                  "key": "password",
+                  "value": "Admin@123"
+                }
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set(\"token\", pm.response.json().access_token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get all users (admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/Account/GetAll",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "Account",
+                "GetAll"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Task",
+      "item": [
+        {
+          "name": "Get all tasks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/Task",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "Task"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get pending tasks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/Task?completed=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "Task"
+              ],
+              "query": [
+                {
+                  "key": "completed",
+                  "value": "false"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get task",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/Task/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "Task",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/Task",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "Task"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Name\": \"Buy milk\",\n  \"Description\": \"Buy milk from the shop\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update task",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/Task/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "Task",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Name\": \"Buy milk\",\n  \"Description\": \"Buy 2 litres of milk\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Mark task completed",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/Task/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "Task",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete task",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/Task/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "Task",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
