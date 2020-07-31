@@ -54,3 +54,71 @@ You do not need to create the database. It is created on the first request, and 
 3. The API starts on IIS Express at **http://localhost:44306**.
 
 Bearer tokens are allowed over plain http only in the Debug build. In a Release build `/Token` requires https.
+
+## Try the API
+
+The examples use `curl` (Git Bash or any terminal with curl). You can also import `TaskManager.postman_collection.json` into Postman. The **Get token** request there saves the token for the other requests.
+
+### 1. Register the first admin
+
+The first admin can register without logging in. After an admin exists, only a logged in admin can add another admin.
+
+```bash
+curl -X POST http://localhost:44306/Account/RegisterAdmin \
+  -H "Content-Type: application/json" \
+  -d '{"Email":"admin@example.com","FirstName":"Admin","LastName":"User","Password":"Admin@123","ConfirmPassword":"Admin@123"}'
+```
+
+Password needs at least 6 characters with an uppercase letter, a lowercase letter, a digit and a symbol.
+
+### 2. Get a token
+
+```bash
+curl -X POST http://localhost:44306/Token \
+  -d "grant_type=password&username=admin@example.com&password=Admin@123"
+```
+
+Copy `access_token` from the response. It is valid for 1 hour. Send it in the `Authorization` header in the next requests:
+
+```bash
+TOKEN=paste-the-access-token-here
+```
+
+### 3. Create a task
+
+```bash
+curl -X POST http://localhost:44306/Task \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"Name":"Buy milk","Description":"Buy milk from the shop"}'
+```
+
+### 4. List tasks
+
+```bash
+curl http://localhost:44306/Task -H "Authorization: Bearer $TOKEN"
+curl "http://localhost:44306/Task?completed=false" -H "Authorization: Bearer $TOKEN"
+```
+
+### 5. Update, complete and delete a task
+
+```bash
+curl -X PUT http://localhost:44306/Task/1 \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"Name":"Buy milk","Description":"Buy 2 litres of milk"}'
+
+curl -X PATCH http://localhost:44306/Task/1 -H "Authorization: Bearer $TOKEN"
+
+curl -X DELETE http://localhost:44306/Task/1 -H "Authorization: Bearer $TOKEN"
+```
+
+### 6. Register a normal user
+
+```bash
+curl -X POST http://localhost:44306/Account/RegisterUser \
+  -H "Content-Type: application/json" \
+  -d '{"Email":"user@example.com","FirstName":"Test","LastName":"User","Organization":"Test Org","Password":"User@123","ConfirmPassword":"User@123"}'
+```
+
+Then get a token for this user as in step 2.
