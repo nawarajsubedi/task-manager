@@ -18,8 +18,9 @@ namespace DotNetAssignment.IOC
             var container = new UnityContainer();
             container.RegisterType<ITodoTaskRepository, TodoTaskRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<ITodoTaskService, TodoTaskService>(new HierarchicalLifetimeManager());
-            container.RegisterType<ApplicationDbContext>();
-            container.RegisterType<IUnitOfWork, UnitOfWork>();
+            // one db context per request, disposed when request ends
+            container.RegisterType<ApplicationDbContext>(new HierarchicalLifetimeManager());
+            container.RegisterType<IUnitOfWork, UnitOfWork>(new HierarchicalLifetimeManager());
             return container;
         }
     }
