@@ -22,13 +22,13 @@ Both options also need a **SQL Server database**. The default is SQL Server Loca
 
 ---
 
-## How to run
+## Option A: Windows with Visual Studio
 
-### 1. Requirements
+### 1. Install the tools (one time)
 
-- Windows
-- Visual Studio 2019 with the **ASP.NET and web development** workload. This also installs IIS Express and SQL Server LocalDB.
-- .NET Framework 4.5.2 Developer Pack (targeting pack). Visual Studio 2022 does not include it, so either install it or change the target framework to 4.8 in project properties.
+- [Git for Windows](https://git-scm.com/download/win)
+- Visual Studio 2019 or 2022 with the **ASP.NET and web development** workload. This also installs IIS Express and SQL Server LocalDB.
+- The **.NET Framework 4.5.2 targeting pack**. Visual Studio 2022 does not include it. If you do not have it, use [Option B](#option-b-windows-from-the-command-line), which gets the reference assemblies from NuGet instead.
 
 ### 2. Clone the repository
 
@@ -43,31 +43,21 @@ Open `DotNetAssignment.sln` in Visual Studio.
 
 ### 4. Restore NuGet packages
 
-The `packages` folder is not in git. Visual Studio restores it on the first build. To do it by hand, right click the solution in Solution Explorer and click **Restore NuGet Packages**, or run:
-
-```bash
-nuget restore DotNetAssignment.sln
-```
+The `packages` folder is not in git. Visual Studio restores it on the first build. To do it by hand, right-click the solution in Solution Explorer and click **Restore NuGet Packages**.
 
 ### 5. Check the connection string
 
-`DotNetAssignment/Web.config` uses SQL Server LocalDB by default:
-
-```xml
-<add name="DatabaseConnectionString" connectionString="Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=DotNetAssignmentDb;Integrated Security=True" providerName="System.Data.SqlClient" />
-```
-
-To use a full SQL Server instead, change `Data Source=(LocalDb)\MSSQLLocalDB` to your server, for example `Data Source=.` for the default local instance.
-
-You do not need to create the database. It is created on the first request, and the roles `super_admin`, `admin` and `user` are added automatically.
+The default connection string uses SQL Server LocalDB, which the Visual Studio workload installs. To use another SQL Server, see [Database](#database).
 
 ### 6. Build and run
 
 1. Press `Ctrl+Shift+B` to build.
-2. Press `F5` (or `Ctrl+F5` without debugging).
+2. Press `F5`, or `Ctrl+F5` to run without debugging.
 3. The API starts on IIS Express at **http://localhost:44306**.
 
-Bearer tokens are allowed over plain http only in the Debug build. In a Release build `/Token` requires https.
+Continue with [Check that it works](#check-that-it-works).
+
+---
 
 ## Try the API
 
