@@ -165,9 +165,26 @@ Use `127.0.0.1`, not `localhost`, in the connection string. With `localhost`, .N
 
 Do not commit real passwords in `Web.config`.
 
+## Check that it works
+
+Without a token, the API must answer `401`:
+
+```bash
+curl -i http://localhost:44306/Task
+```
+
+```
+HTTP/1.1 401 Unauthorized
+{"Message":"Authorization has been denied for this request."}
+```
+
+Then follow [Try the API](#try-the-api). The first `RegisterAdmin` request can take a few seconds, because it creates the database.
+
 ## Try the API
 
-The examples use `curl` (Git Bash or any terminal with curl). You can also import `TaskManager.postman_collection.json` into Postman. The **Get token** request there saves the token for the other requests.
+The examples use `curl` in **Git Bash**. In PowerShell, type `curl.exe` instead of `curl`, because `curl` there is an alias for `Invoke-WebRequest`. You can also import `TaskManager.postman_collection.json` into Postman. The **Get token** request there saves the token for the other requests.
+
+Bearer tokens are allowed over plain http only in the Debug build. In a Release build `/Token` requires https.
 
 ### 1. Register the first admin
 
@@ -202,6 +219,8 @@ curl -X POST http://localhost:44306/Task \
   -H "Content-Type: application/json" \
   -d '{"Name":"Buy milk","Description":"Buy milk from the shop"}'
 ```
+
+The response is `201 Created` with the new task and a `Location` header.
 
 ### 4. List tasks
 
