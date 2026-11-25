@@ -137,6 +137,34 @@ Leave this window open. The API runs at **http://localhost:44306**. Press `Q` in
 
 ---
 
+## Database
+
+The app uses SQL Server through Entity Framework 6. You do not need to create the database or run migrations: on the first request that uses the database, the app creates `DotNetAssignmentDb`, applies the migrations and adds the roles `super_admin`, `admin` and `user`.
+
+The connection string is in `DotNetAssignment/Web.config`:
+
+```xml
+<add name="DatabaseConnectionString" connectionString="Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=DotNetAssignmentDb;Integrated Security=True" providerName="System.Data.SqlClient" />
+```
+
+Pick one of these:
+
+| Database | Connection string `Data Source` part |
+| --- | --- |
+| **SQL Server LocalDB** (default). Installed with Visual Studio, or with `SqlLocalDB.msi` from the [SQL Server Express](https://www.microsoft.com/sql-server/sql-server-downloads) installer ("Download Media" → LocalDB). | `Data Source=(LocalDb)\MSSQLLocalDB;...;Integrated Security=True` (no change needed) |
+| **SQL Server or SQL Server Express** installed on this PC | `Data Source=.;...;Integrated Security=True` (or `.\SQLEXPRESS`) |
+| **SQL Server in Docker** (for example in WSL 2) | `Data Source=127.0.0.1,1433;Initial Catalog=DotNetAssignmentDb;User ID=sa;Password=<your password>` |
+
+To start SQL Server in Docker:
+
+```bash
+docker run -d --name task-manager-sql -e ACCEPT_EULA=Y -e "MSSQL_SA_PASSWORD=<your strong password>" -p 1433:1433 mcr.microsoft.com/mssql/server:2022-latest
+```
+
+Use `127.0.0.1`, not `localhost`, in the connection string. With `localhost`, .NET Framework tries IPv6 first and the connection to a WSL 2 container is refused.
+
+Do not commit real passwords in `Web.config`.
+
 ## Try the API
 
 The examples use `curl` (Git Bash or any terminal with curl). You can also import `TaskManager.postman_collection.json` into Postman. The **Get token** request there saves the token for the other requests.
