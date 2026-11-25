@@ -8,6 +8,20 @@ A REST API to manage todo tasks, built with ASP.NET Web API 2 on .NET Framework 
 - Data is stored in SQL Server with Entity Framework 6 (code first, automatic migrations)
 - Unity is used for dependency injection, with a repository and unit of work for data access
 
+## Which OS can I use?
+
+| Operating system | How to run | Status |
+| --- | --- | --- |
+| **Windows 10 / 11 (x64)** | [Option A: Visual Studio](#option-a-windows-with-visual-studio) | Easiest if you already use Visual Studio |
+| **Windows 10 / 11 (x64)** | [Option B: Command line](#option-b-windows-from-the-command-line) | Tested on Windows 11 Pro with Visual Studio Build Tools 2022 |
+| **Linux / macOS** | Not supported | Use a Windows PC or a Windows virtual machine |
+
+The project runs on **.NET Framework 4.5.2** and is hosted by **IIS Express**. Both exist only on Windows. It does not run on .NET Core / .NET 5+, so it cannot run natively on Linux or macOS.
+
+Both options also need a **SQL Server database**. The default is SQL Server LocalDB (see [Database](#database)).
+
+---
+
 ## How to run
 
 ### 1. Requirements
