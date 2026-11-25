@@ -272,6 +272,18 @@ Then get a token for this user as in step 2.
 - Task `Name` must be 5 to 30 characters, `Description` 10 to 500 characters.
 - Requests without a valid token return `401`.
 
+## Troubleshooting
+
+| Problem | Fix |
+| --- | --- |
+| `MSB3644: The reference assemblies for .NETFramework,Version=v4.5.2 were not found` | Do [Option B, step 5](#5-get-the-net-framework-452-reference-assemblies-one-time) and build with `-p:TargetFrameworkRootPath=...`, or install the .NET Framework 4.5.2 Developer Pack. |
+| `error: 52 - Unable to locate a Local Database Runtime installation` | SQL Server LocalDB is not installed. Install it, or point the connection string at another SQL Server (see [Database](#database)). |
+| `The remote computer refused the network connection` with SQL Server in Docker/WSL | Use `Data Source=127.0.0.1,1433` instead of `localhost,1433`. Check the container is running with `docker ps`. |
+| `NU1903` warnings during restore | Known vulnerabilities in old package versions. They do not stop the build. |
+| IIS Express says the port is in use | Another app uses port 44306. Stop it, or start IIS Express with another `/port:` and use that port in the URLs. |
+| `/Token` answers that https is required | You are running a Release build. Use the Debug build for local testing, or call the API over https. |
+| `curl` in PowerShell asks for parameters or prints an object | Use `curl.exe`, or run the examples in Git Bash. |
+
 ## Project structure
 
 ```
