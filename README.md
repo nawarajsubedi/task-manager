@@ -59,6 +59,84 @@ Continue with [Check that it works](#check-that-it-works).
 
 ---
 
+## Option B: Windows from the command line
+
+These steps do not need the Visual Studio IDE or admin rights for the build. Run all commands in **PowerShell**.
+
+### 1. Install the tools (one time)
+
+- [Git for Windows](https://git-scm.com/download/win)
+- [Build Tools for Visual Studio 2022](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022) with the **Web development build tools** workload. This provides MSBuild and the web application build targets.
+- **IIS Express 10**. It is installed with Visual Studio. Otherwise download it from Microsoft ([IIS Express 10.0](https://www.microsoft.com/download/details.aspx?id=48264)). Check with:
+
+  ```powershell
+  Test-Path "C:\Program Files\IIS Express\iisexpress.exe"   # should print True
+  ```
+
+- A SQL Server database. See [Database](#database).
+
+### 2. Clone the repository
+
+```powershell
+git clone https://github.com/nawarajsubedi/task-manager.git
+cd task-manager
+```
+
+### 3. Find MSBuild
+
+```powershell
+$vs = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -products * -latest -property installationPath
+$msbuild = Join-Path $vs "MSBuild\Current\Bin\MSBuild.exe"
+& $msbuild -version
+```
+
+Run this again in every new PowerShell window before building.
+
+### 4. Restore NuGet packages
+
+```powershell
+& $msbuild DotNetAssignment.sln -t:restore -p:RestorePackagesConfig=true
+```
+
+The restore prints `NU1903` warnings about known vulnerabilities in some old packages. These are warnings only and do not stop the build.
+
+### 5. Get the .NET Framework 4.5.2 reference assemblies (one time)
+
+Visual Studio 2022 Build Tools do not include the 4.5.2 targeting pack, and the build fails with `MSB3644` without it. Microsoft publishes the same reference assemblies as a NuGet package, which you can download without admin rights:
+
+```powershell
+$refs = "$env:LOCALAPPDATA\task-manager-tools\refasm-net452"
+Invoke-WebRequest https://www.nuget.org/api/v2/package/Microsoft.NETFramework.ReferenceAssemblies.net452/1.0.3 -OutFile "$env:TEMP\refasm-net452.zip" -UseBasicParsing
+Expand-Archive "$env:TEMP\refasm-net452.zip" -DestinationPath $refs -Force
+Test-Path "$refs\build\.NETFramework\v4.5.2\mscorlib.dll"   # should print True
+```
+
+If you already have the .NET Framework 4.5.2 Developer Pack installed, skip this step and leave out the `-p:TargetFrameworkRootPath=...` argument in the next step.
+
+### 6. Build
+
+```powershell
+& $msbuild DotNetAssignment.sln -p:Configuration=Debug "-p:TargetFrameworkRootPath=$env:LOCALAPPDATA\task-manager-tools\refasm-net452\build\"
+```
+
+The build ends with `DotNetAssignment -> ...\DotNetAssignment\bin\DotNetAssignment.dll`.
+
+### 7. Set the connection string
+
+Edit `DotNetAssignment/Web.config` if you are not using LocalDB. See [Database](#database).
+
+### 8. Run
+
+From the repository root:
+
+```powershell
+& "C:\Program Files\IIS Express\iisexpress.exe" /path:"$PWD\DotNetAssignment" /port:44306
+```
+
+Leave this window open. The API runs at **http://localhost:44306**. Press `Q` in this window to stop it.
+
+---
+
 ## Try the API
 
 The examples use `curl` (Git Bash or any terminal with curl). You can also import `TaskManager.postman_collection.json` into Postman. The **Get token** request there saves the token for the other requests.
